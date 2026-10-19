@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EUNIOA Coffee Shop | Specialty Coffee, Matcha & More</title>
+<meta name="description" content="Discover EUNIOA, your destination for handcrafted coffee, creamy lattes, refreshing matcha, and cozy café moments.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E☕%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--espresso:#3B241B;--coffee:#6F4E37;--cream:#F7F2E8;--warm-white:#FFFDF8;
+--matcha:#8A9A5B;--caramel:#C68E52;--dark:#29231F;
+--font-heading:'Playfair Display',Georgia,serif;
+--font-body:'Inter',system-ui,sans-serif;
+--shadow-sm:0 1px 3px rgba(59,36,27,0.08);
+--shadow-md:0 4px 20px rgba(59,36,27,0.1);
+--shadow-lg:0 8px 40px rgba(59,36,27,0.12);
+--radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--warm-white);color:var(--dark);line-height:1.6;overflow-x:hidden}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-heading);line-height:1.2;color:var(--espresso)}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-body);border:none;background:none}
+input,textarea,select{font-family:var(--font-body);font-size:14px}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section-label{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--caramel);margin-bottom:12px}
+.section-title{font-size:clamp(32px,5vw,52px);font-weight:600;margin-bottom:16px;color:var(--espresso)}
+.section-subtitle{font-size:clamp(16px,2vw,18px);color:var(--coffee);max-width:560px;line-height:1.7}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:50px;font-weight:500;font-size:14px;transition:all .3s ease;letter-spacing:0.3px}
+.btn-primary{background:var(--espresso);color:var(--cream)}
+.btn-primary:hover{background:var(--coffee);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn-outline{border:1.5px solid var(--espresso);color:var(--espresso)}
+.btn-outline:hover{background:var(--espresso);color:var(--cream);transform:translateY(-2px)}
+.btn-caramel{background:var(--caramel);color:var(--warm-white)}
+.btn-caramel:hover{background:#b57a3f;transform:translateY(-2px)}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.active{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,253,248,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(59,36,27,0.06);transition:box-shadow .3s}
+.nav.scrolled{box-shadow:0 2px 20px rgba(59,36,27,0.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:1200px;margin:0 auto;padding:0 24px}
+.nav-logo{display:flex;flex-direction:column;gap:0}
+.nav-logo h1{font-size:24px;font-weight:600;letter-spacing:4px;color:var(--espresso)}
+.nav-logo span{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--coffee);font-family:var(--font-body);font-weight:500}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;letter-spacing:0.5px;color:var(--coffee);transition:color .3s;position:relative;white-space:nowrap}
+.nav-links a:hover{color:var(--espresso)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--caramel);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.nav-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .3s;position:relative;color:var(--coffee)}
+.nav-icon:hover{background:rgba(111,78,55,0.08);color:var(--espresso)}
+.nav-icon svg{width:20px;height:20px}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px}
+.hamburger span{width:22px;height:2px;background:var(--espresso);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+/* Mobile Nav */
+.mobile-nav{position:fixed;top:72px;left:0;right:0;bottom:0;background:rgba(255,253,248,0.98);backdrop-filter:blur(20px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;opacity:0;pointer-events:none;transition:opacity .3s}
+.mobile-nav.open{opacity:1;pointer-events:auto}
+.mobile-nav a{font-family:var(--font-heading);font-size:24px;color:var(--espresso);transition:color .3s}
+.mobile-nav a:hover{color:var(--caramel)}
+
+/* Search Overlay */
+.search-overlay{position:fixed;inset:0;background:rgba(255,253,248,0.96);backdrop-filter:blur(20px);z-index:2000;display:flex;align-items:flex-start;justify-content:center;padding-top:120px;opacity:0;pointer-events:none;transition:opacity .3s}
+.search-overlay.open{opacity:1;pointer-events:auto}
+.search-box{width:100%;max-width:600px;position:relative;padding:0 24px}
+.search-box input{width:100%;padding:20px 24px;border:2px solid var(--cream);border-radius:50px;font-size:18px;background:var(--warm-white);color:var(--dark);outline:none;transition:border-color .3s}
+.search-box input:focus{border-color:var(--caramel)}
+.search-results{margin-top:16px;background:var(--warm-white);border-radius:var(--radius);box-shadow:var(--shadow-lg);max-height:50vh;overflow-y:auto;display:none}
+.search-results.active{display:block}
+.search-result-item{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid rgba(59,36,27,0.05);cursor:pointer;transition:background .2s}
+.search-result-item:hover{background:var(--cream)}
+.search-result-item img{width:50px;height:50px;border-radius:8px;object-fit:cover}
+.search-result-info h4{font-size:14px;color:var(--espresso)}
+.search-result-info p{font-size:12px;color:var(--coffee)}
+.search-close{position:fixed;top:24px;right:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--cream);color:var(--espresso);font-size:20px;transition:background .3s;z-index:2001}
+.search-close:hover{background:var(--coffee);color:var(--warm-white)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background-image:url('https://images.unsplash.com/photo-1495474474407-1c294920700d?w=1600&q=80');background-size:cover;background-position:center;background-attachment:fixed}
+.hero::before{display:none}
+.hero-inner{position:relative;z-index:2;text-align:center;padding-top:72px;padding-bottom:60px;width:100%}
+.hero-content{max-width:700px;margin:0 auto;padding:40px 24px}
+.hero-label{font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--caramel);margin-bottom:20px}
+.hero h2{font-size:clamp(36px,6vw,72px);font-weight:600;line-height:1.08;margin-bottom:24px;color:var(--cream);text-shadow: 0 2px 10px rgba(0,0,0,0.3)}
+.hero p{font-size:clamp(15px,1.8vw,18px);color:rgba(247,242,232,0.9);max-width:560px;line-height:1.7;margin:0 auto 40px;text-shadow: 0 1px 5px rgba(0,0,0,0.2)}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.hero .btn-outline{border-color:var(--cream);color:var(--cream)}
+.hero .btn-outline:hover{background:var(--cream);color:var(--espresso)}
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--cream);font-size:11px;letter-spacing:2px;text-transform:uppercase;animation:scrollBounce 2s infinite;z-index:2;opacity:0.8}
+@keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* PRODUCT CARDS */
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.product-card{background:var(--warm-white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .4s ease,box-shadow .4s ease;border:1px solid rgba(59,36,27,0.04)}
+.product-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.product-card-img{position:relative;overflow:hidden;aspect-ratio:4/5}
+.product-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.product-card:hover .product-card-img img{transform:scale(1.08)}
+.product-tag{position:absolute;top:12px;left:12px;padding:5px 12px;border-radius:50px;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+.tag-iced{background:rgba(138,154,91,0.15);color:var(--matcha)}
+.tag-hot{background:rgba(198,142,82,0.15);color:var(--caramel)}
+.tag-pastry{background:rgba(111,78,55,0.1);color:var(--coffee)}
+.tag-meal{background:rgba(59,36,27,0.12);color:var(--espresso)}
+.product-card-body{padding:20px}
+.product-card-body h4{font-size:18px;font-weight:600;margin-bottom:6px;color:var(--espresso)}
+.product-card-body p{font-size:13px;color:var(--coffee);line-height:1.5;margin-bottom:14px;min-height:40px}
+.product-card-footer{display:flex;align-items:center}
+.product-price{font-size:18px;font-weight:600;color:var(--espresso)}
+
+/* OUR STORY */
+.our-story{background:var(--cream)}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.story-image img{width:100%;border-radius:var(--radius);object-fit:cover;box-shadow:var(--shadow-md)}
+.story-content p{font-size:clamp(15px,1.6vw,17px);color:var(--coffee);line-height:1.8;margin-bottom:20px}
+
+/* MENU FILTER */
+.menu-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;justify-content:center}
+.filter-btn{padding:10px 22px;border-radius:50px;font-size:13px;font-weight:500;border:1.5px solid rgba(111,78,55,0.2);color:var(--coffee);transition:all .3s;background:transparent}
+.filter-btn:hover{border-color:var(--coffee);color:var(--espresso)}
+.filter-btn.active{background:var(--espresso);color:var(--cream);border-color:var(--espresso)}
+
+/* EXPERIENCE */
+.exp-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.exp-card{background:var(--cream);border-radius:var(--radius);padding:36px 28px;text-align:center;transition:transform .4s,box-shadow .4s;border:1px solid rgba(59,36,27,0.04)}
+.exp-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.exp-icon{width:56px;height:56px;margin:0 auto 20px;border-radius:50%;background:rgba(198,142,82,0.12);display:flex;align-items:center;justify-content:center;color:var(--caramel)}
+.exp-icon svg{width:24px;height:24px}
+.exp-card h4{font-size:20px;margin-bottom:10px}
+.exp-card p{font-size:14px;color:var(--coffee);line-height:1.6}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,240px);gap:16px}
+.gallery-item{position:relative;overflow:hidden;border-radius:var(--radius-sm)}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.gallery-item:hover img{transform:scale(1.08)}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery-item:nth-child(5){grid-column:span 2}
+.gallery-caption{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(transparent,rgba(59,36,27,0.7));color:var(--cream);font-size:13px;font-weight:500;opacity:0;transition:opacity .3s}
+.gallery-item:hover .gallery-caption{opacity:1}
+
+/* REVIEWS */
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.review-card{background:var(--cream);border-radius:var(--radius);padding:32px;border:1px solid rgba(59,36,27,0.04);transition:transform .3s}
+.review-card:hover{transform:translateY(-4px)}
+.review-stars{color:var(--caramel);font-size:16px;margin-bottom:16px;letter-spacing:2px}
+.review-card blockquote{font-size:15px;color:var(--dark);line-height:1.7;margin-bottom:16px;font-style:italic}
+.review-author{font-size:13px;font-weight:600;color:var(--espresso)}
+.review-note{font-size:11px;color:var(--coffee);margin-top:4px;font-style:italic}
+
+/* PROMO BANNER */
+.promo{background:var(--espresso);color:var(--cream);overflow:hidden}
+.promo-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.promo-content .section-label{color:var(--caramel)}
+.promo-content h2{color:var(--cream);font-size:clamp(28px,4vw,44px)}
+.promo-content p{color:rgba(247,242,232,0.75);font-size:16px;line-height:1.7;margin-bottom:32px;max-width:440px}
+.promo-image img{width:100%;border-radius:var(--radius);object-fit:cover;box-shadow:0 8px 40px rgba(0,0,0,0.3)}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.contact-detail{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.contact-detail .icon{width:20px;height:20px;color:var(--caramel);flex-shrink:0;margin-top:2px}
+.contact-detail p{font-size:14px;color:var(--coffee);line-height:1.6}
+.contact-detail a{color:var(--caramel);transition:color .3s}
+.contact-detail a:hover{color:var(--espresso)}
+.social-links{display:flex;gap:12px;margin-top:20px}
+.social-link{width:40px;height:40px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;color:var(--coffee);transition:all .3s;border:1px solid rgba(111,78,55,0.1)}
+.social-link:hover{background:var(--espresso);color:var(--cream);border-color:var(--espresso)}
+.social-link svg{width:18px;height:18px}
+.contact-form{display:flex;flex-direction:column;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:13px;font-weight:500;color:var(--espresso)}
+.form-group input,.form-group textarea,.form-group select{padding:12px 16px;border:1.5px solid rgba(111,78,55,0.15);border-radius:var(--radius-sm);background:var(--warm-white);color:var(--dark);transition:border-color .3s;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--caramel)}
+.form-group .error-msg{font-size:12px;color:#c0392b;display:none}
+.form-group.error input,.form-group.error textarea{border-color:#c0392b}
+.form-group.error .error-msg{display:block}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.map-embed{width:100%;height:300px;border-radius:var(--radius-sm);overflow:hidden;margin-top:20px;border:2px solid rgba(111,78,55,0.1)}
+.map-embed iframe{width:100%;height:100%;border:0}
+
+/* TOAST */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:5000;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--espresso);color:var(--cream);padding:14px 24px;border-radius:var(--radius-sm);font-size:14px;box-shadow:var(--shadow-lg);transform:translateX(120%);transition:transform .4s ease;display:flex;align-items:center;gap:10px;max-width:340px}
+.toast.show{transform:translateX(0)}
+.toast svg{width:18px;height:18px;flex-shrink:0;color:var(--caramel)}
+
+/* FOOTER */
+.footer{background:var(--espresso);color:rgba(247,242,232,0.75);padding-top:60px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(247,242,232,0.08)}
+.footer-brand h3{font-size:22px;letter-spacing:3px;color:var(--cream);margin-bottom:4px}
+.footer-brand .tagline{font-size:12px;letter-spacing:1.5px;color:var(--caramel);margin-bottom:16px}
+.footer-brand p{font-size:13px;line-height:1.7;max-width:280px}
+.footer-col h4{font-size:14px;font-weight:600;color:var(--cream);margin-bottom:16px;letter-spacing:0.5px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px}
+.footer-col a{font-size:13px;transition:color .3s}
+.footer-col a:hover{color:var(--caramel)}
+.newsletter-form{display:flex;gap:8px;margin-top:8px}
+.newsletter-form input{flex:1;padding:10px 14px;border-radius:50px;border:1px solid rgba(247,242,232,0.15);background:transparent;color:var(--cream);font-size:13px;outline:none}
+.newsletter-form input::placeholder{color:rgba(247,242,232,0.4)}
+.newsletter-form input:focus{border-color:var(--caramel)}
+.newsletter-form button{padding:10px 20px;border-radius:50px;background:var(--caramel);color:var(--warm-white);font-size:13px;font-weight:500;transition:background .3s}
+.newsletter-form button:hover{background:#b57a3f}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding:24px 0;font-size:12px;flex-wrap:wrap;gap:12px}
+.footer-bottom a{transition:color .3s}
+.footer-bottom a:hover{color:var(--caramel)}
+
+section{padding:clamp(60px,8vw,100px) 0}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+.products-grid,.exp-cards,.reviews-grid{grid-template-columns:repeat(2,1fr)}
+.story-grid,.contact-grid,.promo-inner{grid-template-columns:1fr;gap:40px}
+.gallery-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,200px)}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 1}
+.gallery-item:nth-child(5){grid-column:span 2}
+.footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+}
+@media(max-width:768px){
+.nav-links{display:none}
+.hamburger{display:flex}
+.products-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+.exp-cards,.reviews-grid{grid-template-columns:1fr}
+.gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,160px)}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 1}
+.gallery-item:nth-child(5){grid-column:span 1}
+.footer-grid{grid-template-columns:1fr}
+.form-row{grid-template-columns:1fr}
+.scroll-indicator{display:none}
+}
+@media(max-width:480px){
+.products-grid{grid-template-columns:1fr}
+.hero h2{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+<div class="nav-inner">
+<a href="#home" class="nav-logo">
+<h1>EUNIOA</h1>
+<span>A Moment in Every Cup.</span>
+</a>
+<ul class="nav-links">
+<li><a href="#home">Home</a></li>
+<li><a href="#story">Our Story</a></li>
+<li><a href="#menu">Menu</a></li>
+<li><a href="#experience">Our Coffee</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#story">Profile</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<div class="nav-actions">
+<button class="nav-icon" id="searchBtn" aria-label="Search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+</button>
+<button class="hamburger" id="hamburger" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+</div>
+</div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+<a href="#home">Home</a>
+<a href="#story">Our Story</a>
+<a href="#menu">Menu</a>
+<a href="#experience">Our Coffee</a>
+<a href="#gallery">Gallery</a>
+<a href="#story">Profile</a>
+<a href="#contact">Contact</a>
+</div>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="searchOverlay">
+<button class="search-close" id="searchClose" aria-label="Close search">✕</button>
+<div class="search-box">
+<input type="text" placeholder="Search drinks, pastries..." id="searchInput" autocomplete="off">
+<div class="search-results" id="searchResults"></div>
+</div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home" style="background-image: url(EG1.jpg);">
+<div class="container hero-inner">
+<div class="hero-content reveal">
+<p class="hero-label">Your Daily Ritual, Reimagined.</p>
+<h2>EUNIOA GROUNDS<br>in Every Cup.</h2>
+<div class="hero-buttons">
+<a href="#menu" class="btn btn-primary">Explore Our Menu</a>
+<a href="#story" class="btn btn-outline">Our Story</a>
+</div>
+</div>
+</div>
+<div class="scroll-indicator">Scroll
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</div>
+</section>
+
+<!-- SIGNATURE DRINKS -->
+<section id="signature" style="background:var(--warm-white)">
+<div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:48px">
+<p class="section-label">Signature Drinks</p>
+<h2 class="section-title">Made to Be Savored.</h2>
+<p class="section-subtitle" style="margin:0 auto">Meet your new favorite, handcrafted one cup at a time.</p>
+</div>
+<div class="products-grid" id="signatureGrid"></div>
+</div>
+</section>
+
+<!-- OUR STORY -->
+<section class="our-story" id="story">
+<div class="container story-grid">
+<div class="story-image reveal">
+<img src="EG2.jpg" alt="Barista carefully preparing espresso at EUNIOA café" loading="lazy">
+</div>
+<div class="story-content reveal" style="transition-delay:.15s">
+<p class="section-label">Our Story</p>
+<h2 class="section-title">Coffee Made for Your Kind of Moments.</h2>
+<p>At EUNIOA, we believe great coffee is more than a drink. It is a pause in a busy day, a conversation with someone special, and a small ritual that makes ordinary moments feel meaningful.</p>
+<p>Every cup is prepared with care, thoughtfully selected ingredients, and a love for the craft of coffee. Whether you prefer a bold espresso, a creamy latte, or a refreshing matcha, there is always a little moment waiting for you.</p>
+<a href="#menu" class="btn btn-primary" style="margin-top:12px">Discover Our Story</a>
+</div>
+</div>
+</section>
+
+<!-- EXPLORE OUR MENU -->
+<section id="menu" style="background:var(--warm-white)">
+<div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:40px">
+<p class="section-label">Explore</p>
+<h2 class="section-title">Our Menu</h2>
+<p class="section-subtitle" style="margin:0 auto">From bold espresso to refreshing matcha, savory meals, and warm pastries.</p>
+</div>
+<div class="menu-filters reveal" id="menuFilters"></div>
+<div class="products-grid" id="menuGrid"></div>
+</div>
+</section>
+
+<!-- COFFEE EXPERIENCE -->
+<section id="experience" style="background:var(--cream)">
+<div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:48px">
+<p class="section-label">The EUNIOA Experience</p>
+<h2 class="section-title">Crafted With Care.<br>Served With Heart.</h2>
+</div>
+<div class="exp-cards">
+<div class="exp-card reveal">
+<div class="exp-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+</div>
+<h4>Quality Ingredients</h4>
+<p>Thoughtfully selected coffee beans and ingredients make every cup worth enjoying.</p>
+</div>
+<div class="exp-card reveal" style="transition-delay:.1s">
+<div class="exp-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+</div>
+<h4>Made Fresh to Order</h4>
+<p>Every drink is prepared with attention to flavor, balance, and consistency.</p>
+</div>
+<div class="exp-card reveal" style="transition-delay:.2s">
+<div class="exp-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+</div>
+<h4>Your Everyday Escape</h4>
+<p>A welcoming coffee experience designed for slow mornings and meaningful breaks.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" style="background:var(--warm-white)">
+<div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:48px">
+<p class="section-label">Gallery</p>
+<h2 class="section-title">A Glimpse Inside EUNIOA</h2>
+</div>
+<div class="gallery-grid reveal">
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1461023052343-1274c0a4e620?w=800&q=80" alt="Iced Spanish latte in transparent glass" loading="lazy">
+<div class="gallery-caption">Iced Spanish Latte</div>
+</div>
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1536256357576-9b07b7b28b3a?w=500&q=80" alt="Iced matcha latte" loading="lazy">
+<div class="gallery-caption">Matcha Latte</div>
+</div>
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1572442389467-9febfd528f4e?w=500&q=80" alt="Barista pouring latte art" loading="lazy">
+<div class="gallery-caption">Latte Art</div>
+</div>
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1442516219020-0e4e0297c418?w=500&q=80" alt="Espresso extraction" loading="lazy">
+<div class="gallery-caption">Espresso</div>
+</div>
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1501335990960-55f2b410e8a4?w=800&q=80" alt="Coffee beans and brewing" loading="lazy">
+<div class="gallery-caption">Fresh Beans</div>
+</div>
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1554114957-67fa5a35a60e?w=500&q=80" alt="Cozy café interior" loading="lazy">
+<div class="gallery-caption">Our Space</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- REVIEWS -->
+<section style="background:var(--cream)">
+<div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:48px">
+<p class="section-label">Community</p>
+<h2 class="section-title">A Little Love From Our Coffee Community.</h2>
+</div>
+<div class="reviews-grid">
+<div class="review-card reveal">
+<div class="review-stars">★★★★★</div>
+<blockquote>"The iced Spanish latte is smooth, creamy, and perfectly balanced. It's become my daily order."</blockquote>
+<p class="review-author">Mia T.</p>
+<p class="review-note">Sample testimonial for demonstration</p>
+</div>
+<div class="review-card reveal" style="transition-delay:.1s">
+<div class="review-stars">★★★★★</div>
+<blockquote>"The matcha latte is refreshing, beautifully presented, and full of flavor. Best matcha in the city."</blockquote>
+<p class="review-author">James L.</p>
+<p class="review-note">Sample testimonial for demonstration</p>
+</div>
+<div class="review-card reveal" style="transition-delay:.2s">
+<div class="review-stars">★★★★★</div>
+<blockquote>"A cozy coffee experience with drinks that make my day better. The vibe here is unmatched."</blockquote>
+<p class="review-author">Sofia R.</p>
+<p class="review-note">Sample testimonial for demonstration</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PROMO BANNER -->
+<section class="promo">
+<div class="container promo-inner">
+<div class="promo-content reveal">
+<p class="section-label">Special</p>
+<h2 class="section-title">Your Next Favorite Cup Is Waiting.</h2>
+<p>Discover handcrafted drinks made for your everyday moments. Each cup is an invitation to slow down and savor something wonderful.</p>
+<a href="#menu" class="btn btn-caramel">Explore the Menu</a>
+</div>
+<div class="promo-image reveal" style="transition-delay:.15s">
+<img src="https://images.unsplash.com/photo-1512567300-4e5e0b4e0836?w=700&q=80" alt="Beautiful iced coffee in glass cup" loading="lazy">
+</div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--warm-white)">
+<div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:48px">
+<p class="section-label">Visit Us</p>
+<h2 class="section-title">Come Find Your Moment.</h2>
+</div>
+<div class="contact-grid">
+<div class="reveal">
+<h3 style="margin-bottom:24px">Get in Touch</h3>
+<div class="contact-detail">
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+<p>B6 L4 PH9 FILINVEST HOMESITE, Bagong Silang, San Pedro, Laguna</p>
+</div>
+<div class="contact-detail">
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+<p>Mon–Fri: 8:00 AM – 8:00 PM<br>Sat–Sun: 9:00 AM – 9:00 PM</p>
+</div>
+<div class="contact-detail">
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.34 20 20 0 01-6-6 19.79 19.79 0 01-3.34-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+<p>+63 **** **** **** </p>
+</div>
+<div class="contact-detail">
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+<p><a href="mailto:hello@eunioa.coffee">hello@eunioa.coffee</a></p>
+</div>
+<div class="social-links">
+<a href="#" class="social-link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+<a href="https://www.facebook.com/EunoiaGrounds" class="social-link" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+</div>
+<div class="map-embed">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.229464450463!2d121.02099193945516!3d14.334870995949624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d70037dfc595%3A0x1bca9bcab58ac19e!2sEunoia%20Grounds!5e1!3m2!1sen!2sph!4v1791785910784!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+</div>
+</div>
+<div class="reveal" style="transition-delay:.15s">
+<h3 style="margin-bottom:24px">Send Us a Message</h3>
+<form class="contact-form" id="contactForm" novalidate>
+<div class="form-row">
+<div class="form-group">
+<label for="cName">Full Name</label>
+<input type="text" id="cName" placeholder="Your name" required>
+<span class="error-msg">Please enter your name</span>
+</div>
+<div class="form-group">
+<label for="cEmail">Email</label>
+<input type="email" id="cEmail" placeholder="your@email.com" required>
+<span class="error-msg">Please enter a valid email</span>
+</div>
+</div>
+<div class="form-group">
+<label for="cSubject">Subject</label>
+<input type="text" id="cSubject" placeholder="How can we help?">
+</div>
+<div class="form-group">
+<label for="cMessage">Message</label>
+<textarea id="cMessage" rows="4" placeholder="Your message..." required></textarea>
+<span class="error-msg">Please enter a message</span>
+</div>
+<button type="submit" class="btn btn-primary" style="align-self:flex-start">Send Message</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand">
+<h3>EUNIOA</h3>
+<p class="tagline">A Moment in Every Cup.</p>
+<p>Thoughtfully crafted coffee for your everyday moments. Specialty drinks, cozy vibes, and a whole lot of care in every cup.</p>
+</div>
+<div class="footer-col">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="#home">Home</a></li>
+<li><a href="#story">Our Story</a></li>
+<li><a href="#menu">Menu</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Menu</h4>
+<ul>
+<li><a href="#menu">Espresso Drinks</a></li>
+<li><a href="#menu">Iced Coffee</a></li>
+<li><a href="#menu">Matcha</a></li>
+<li><a href="#menu">Non-Coffee</a></li>
+<li><a href="#menu">Pastries & Meals</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Stay Connected</h4>
+<p style="font-size:13px;margin-bottom:12px">Subscribe for updates and exclusive offers.</p>
+<form class="newsletter-form" id="newsletterForm" novalidate>
+<input type="email" placeholder="Your email" required>
+<button type="submit">Join</button>
+</form>
+<div class="social-links" style="margin-top:20px">
+<a href="#" class="social-link" aria-label="Instagram" style="background:rgba(247,242,232,0.08);border-color:rgba(247,242,232,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+<a href="#" class="social-link" aria-label="Facebook" style="background: rgba(247,242,232,0.08);border-color:rgba(247,242,232,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© <span id="footerYear"></span> EUNIOA Coffee. All rights reserved.</span>
+<span style="display:flex;gap:16px">
+<a href="#">Privacy Policy</a>
+<a href="#">Terms & Conditions</a>
+</span>
+</div>
+</div>
+</footer>
+
+<script>
+const allProducts = [
+  // Classic Coffee
+  {id:1,name:"Americano",desc:"Bold and clean espresso diluted with hot water.",price:90,category:"Classic Coffee",tag:"hot",img:"https://images.unsplash.com/photo-1517701550927-07d49e0e9d36?w=500&q=80",alt:"Americano"},
+  {id:2,name:"Cappuccino",desc:"Rich espresso balanced with steamed milk and a velvety foam cap.",price:100,category:"Classic Coffee",tag:"hot",img:"https://images.unsplash.com/photo-1572442389467-9febfd528f4e?w=500&q=80",alt:"Cappuccino"},
+  {id:3,name:"Café Latte",desc:"Smooth espresso with a generous pour of steamed milk.",price:100,category:"Classic Coffee",tag:"hot",img:"https://images.unsplash.com/photo-1534776108817-58fa4a4c4633?w=500&q=80",alt:"Cafe Latte"},
+  {id:4,name:"Caramel Macchiato",desc:"Smooth espresso and milk finished with buttery caramel sweetness.",price:110,category:"Classic Coffee",tag:"hot",img:"https://images.unsplash.com/photo-1485803635256-7a258997a5e3?w=1000&q=80",alt:"Caramel Macchiato"},
+  {id:5,name:"Mocha",desc:"Deep chocolate notes meet espresso for a smooth and comforting favorite.",price:110,category:"Classic Coffee",tag:"hot",img:"https://images.unsplash.com/photo-1578314675249-3e5eb2d4e246?w=500&q=80",alt:"Mocha"},
+  {id:6,name:"Spanish Latte",desc:"Bold espresso with condensed milk for a rich, sweet, and creamy profile.",price:110,category:"Classic Coffee",tag:"hot",img:"https://images.unsplash.com/photo-1514432544890-a2e6dba824e4?w=500&q=80",alt:"Spanish Latte"},
+  {id:7,name:"Vanilla Latte",desc:"Classic latte infused with smooth, fragrant vanilla.",price:110,category:"Classic Coffee",tag:"hot",img:"https://images.unsplash.com/photo-1461023052343-1274c0a4e620?w=500&q=80",alt:"Vanilla Latte"},
+  
+  // Iced Coffee Lattes
+  {id:8,name:"Iced Americano",desc:"Clean, bold, and refreshing with the character of carefully extracted espresso.",price:100,category:"Iced Coffee Lattes",tag:"iced",img:"https://images.unsplash.com/photo-1517701550927-07d49e0e9d36?w=500&q=80",alt:"Iced Americano"},
+  {id:9,name:"Iced Cappuccino",desc:"Chilled espresso topped with cold foam for a crisp texture.",price:110,category:"Iced Coffee Lattes",tag:"iced",img:"https://images.unsplash.com/photo-1572442389467-9febfd528f4e?w=500&q=80",alt:"Iced Cappuccino"},
+  {id:10,name:"Iced Latte",desc:"Classic espresso poured over cold milk and ice — simple and satisfying.",price:110,category:"Iced Coffee Lattes",tag:"iced",img:"https://images.unsplash.com/photo-1461023052343-1274c0a4e620?w=500&q=80",alt:"Iced Latte"},
+  {id:11,name:"Iced Caramel Macchiato",desc:"Vanilla, milk, and espresso crowned with buttery caramel drizzle.",price:120,category:"Iced Coffee Lattes",tag:"iced",img:"https://images.unsplash.com/photo-1485803635256-7a258997a5e3?w=1000&q=80",alt:"Iced Caramel Macchiato"},
+  {id:12,name:"Iced Mocha",desc:"Espresso and chocolate chilled with milk over ice.",price:120,category:"Iced Coffee Lattes",tag:"iced",img:"https://images.unsplash.com/photo-1578314675249-3e5eb2d4e246?w=500&q=80",alt:"Iced Mocha"},
+  {id:13,name:"Iced Spanish Latte",desc:"Bold espresso meets creamy milk and a touch of sweet indulgence.",price:120,category:"Iced Coffee Lattes",tag:"iced",img:"latte.jpg",alt:"Iced Spanish Latte"},
+  {id:14,name:"Iced Vanilla Latte",desc:"Smooth iced latte sweetened with classic vanilla flavor.",price:120,category:"Iced Coffee Lattes",tag:"iced",img:"https://images.unsplash.com/photo-1627228915653-7be9a0e7e933?w=500&q=80",alt:"Iced Vanilla Latte"},
+
+  // Iced Non-Coffee Latte
+  {id:15,name:"Strawberry Latte",desc:"Sweet strawberry blend with creamy milk over ice.",price:120,category:"Iced Non-Coffee Latte",tag:"iced",img:"https://images.unsplash.com/photo-1627228915653-7be9a0e7e933?w=500&q=80",alt:"Strawberry Latte"},
+  {id:16,name:"Matcha Latte",desc:"Earthy Japanese matcha blended with smooth milk for a refreshing, balanced sip.",price:120,category:"Iced Non-Coffee Latte",tag:"iced",img:"Matchalatte.jpg",alt:"Matcha Latte"},
+  {id:17,name:"Taro Latte",desc:"Creamy purple taro root blended smoothly with milk and ice.",price:120,category:"Iced Non-Coffee Latte",tag:"iced",img:"https://images.unsplash.com/photo-1627228915653-7be9a0e7e933?w=500&q=80",alt:"Taro Latte"},
+  {id:18,name:"Okinawa Latte",desc:"Rich brown sugar and milk creating a sweet Okinawan flavor.",price:130,category:"Iced Non-Coffee Latte",tag:"iced",img:"https://images.unsplash.com/photo-1461023052343-1274c0a4e620?w=500&q=80",alt:"Okinawa Latte"},
+  {id:19,name:"Cookies & Cream Latte",desc:"Crushed cookies blended with vanilla milk for a sweet treat.",price:130,category:"Iced Non-Coffee Latte",tag:"iced",img:"https://images.unsplash.com/photo-1555502735-42c61477eb43?w=500&q=80",alt:"Cookies & Cream Latte"},
+  {id:20,name:"Chocolate Latte",desc:"Rich chocolate blended with creamy milk over ice.",price:120,category:"Iced Non-Coffee Latte",tag:"iced",img:"https://images.unsplash.com/photo-1578314675249-3e5eb2d4e246?w=500&q=80",alt:"Chocolate Latte"},
+  {id:21,name:"Vanilla Latte",desc:"Classic iced milk latte sweetened with fragrant vanilla.",price:120,category:"Iced Non-Coffee Latte",tag:"iced",img:"https://images.unsplash.com/photo-1461023052343-1274c0a4e620?w=500&q=80",alt:"Vanilla Latte"},
+  {id:22,name:"Matcha Chocolate Latte",desc:"The perfect marriage of earthy matcha and rich chocolate.",price:135,category:"Iced Non-Coffee Latte",tag:"iced",img:"https://images.unsplash.com/photo-1536256357576-9b07b7b28b3a?w=500&q=80",alt:"Matcha Chocolate Latte"},
+
+  // Signature Drinks
+  {id:23,name:"Elixir",desc:"Choco mint blend. A uniquely refreshing and indulgent signature creation.",price:135,category:"Signature Drinks",tag:"iced",img:"https://images.unsplash.com/photo-1578314675249-3e5eb2d4e246?w=500&q=80",alt:"Elixir"},
+  {id:24,name:"Lucid",desc:"Tonic honey peach. A bright, sparkling fusion of sweet peach and honey.",price:135,category:"Signature Drinks",tag:"iced",img:"https://images.unsplash.com/photo-1627228915653-7be9a0e7e933?w=500&q=80",alt:"Lucid"},
+
+  // Snacks & Meals
+  {id:25,name:"Creamy Shrimp Pasta",desc:"Rich and creamy shrimp pasta tossed in a savory sauce.",price:230,category:"Snacks & Meals",tag:"meal",img:"https://images.unsplash.com/photo-1473093295043-dd6e5c7c524?w=500&q=80",alt:"Creamy Shrimp Pasta"},
+  {id:26,name:"Chicken Pesto",desc:"Tender chicken with vibrant pesto on toasted bread.",price:210,category:"Snacks & Meals",tag:"meal",img:"https://images.unsplash.com/photo-1525351480844-7f17b2e83ab4?w=500&q=80",alt:"Chicken Pesto"},
+  {id:27,name:"Cheesy Fries",desc:"Crispy fries smothered in warm, gooey cheese.",price:150,category:"Snacks & Meals",tag:"meal",img:"https://images.unsplash.com/photo-1573080436-9155a46e0aa?w=500&q=80",alt:"Cheesy Fries"},
+
+  // Water & Soda
+  {id:28,name:"Mineral Bottled",desc:"Clean and refreshing purified mineral water.",price:25,category:"Water & Soda",tag:"iced",img:"https://images.unsplash.com/photo-1559835156-783e0c3b9fd?w=500&q=80",alt:"Mineral Water"},
+  {id:29,name:"Coke",desc:"Classic ice-cold Coca-Cola.",price:55,category:"Water & Soda",tag:"iced",img:"https://images.unsplash.com/photo-1554848255-1fa509d4f7b?w=500&q=80",alt:"Coke"},
+  {id:30,name:"Sprite",desc:"Crisp and refreshing lemon-lime soda.",price:55,category:"Water & Soda",tag:"iced",img:"https://images.unsplash.com/photo-1554848255-1fa509d4f7b?w=500&q=80",alt:"Sprite"},
+
+  // Pastries
+  {id:31,name:"Butter Croissant",desc:"Flaky, golden, and buttery — the perfect companion to any cup.",price:95,category:"Pastries",tag:"pastry",img:"https://images.unsplash.com/photo-1555502735-42c61477eb43?w=500&q=80",alt:"Butter croissant"},
+  {id:32,name:"Chocolate Croissant",desc:"Rich chocolate wrapped in buttery, flaky pastry layers.",price:115,category:"Pastries",tag:"pastry",img:"https://images.unsplash.com/photo-1530693922525-7b03e7b06e4e?w=500&q=80",alt:"Chocolate croissant"},
+  {id:33,name:"Cinnamon Roll",desc:"Soft, swirled with cinnamon, and drizzled with sweet glaze.",price:110,category:"Pastries",tag:"pastry",img:"https://images.unsplash.com/photo-1509365390498-5fd3d11e1934?w=500&q=80",alt:"Cinnamon roll"},
+  {id:34,name:"Blueberry Muffin",desc:"Tender and bursting with blueberries under a golden crumb top.",price:100,category:"Pastries",tag:"pastry",img:"https://images.unsplash.com/photo-1607957085776-6e3985c2e687?w=500&q=80",alt:"Blueberry muffin"}
+];
+
+const categories = ["All Menu","Classic Coffee","Iced Coffee Lattes","Iced Non-Coffee Latte","Signature Drinks","Snacks & Meals","Water & Soda","Pastries"];
+const signatureIds = [23,24,13,16,11,8];
+let activeFilter = "All Menu";
+
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+
+const nav=$('#nav'), hamburger=$('#hamburger'), mobileNav=$('#mobileNav');
+const searchBtn=$('#searchBtn'), searchOverlay=$('#searchOverlay'), searchClose=$('#searchClose'), searchInput=$('#searchInput'), searchResults=$('#searchResults');
+const toastContainer=$('#toastContainer');
+
+window.addEventListener('scroll',()=>{ nav.classList.toggle('scrolled',window.scrollY>20); });
+
+hamburger.addEventListener('click',()=>{ hamburger.classList.toggle('open'); mobileNav.classList.toggle('open'); });
+mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ hamburger.classList.remove('open'); mobileNav.classList.remove('open'); }));
+
+// Search Logic
+searchBtn.addEventListener('click',()=>{searchOverlay.classList.add('open');searchInput.focus();});
+searchClose.addEventListener('click',closeSearch);
+searchOverlay.addEventListener('click',e=>{if(e.target===searchOverlay)closeSearch();});
+
+function closeSearch(){searchOverlay.classList.remove('open');searchInput.value='';searchResults.classList.remove('active');searchResults.innerHTML='';}
+
+searchInput.addEventListener('input',e=>{
+  const q=e.target.value.toLowerCase().trim();
+  if(q.length>0){
+    const results=allProducts.filter(p=>p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||p.category.toLowerCase().includes(q));
+    if(results.length>0){
+      searchResults.innerHTML=results.map(p=>`
+        <div class="search-result-item" data-id="${p.id}">
+          <img src="${p.img}" alt="${p.name}">
+          <div class="search-result-info">
+            <h4>${p.name}</h4>
+            <p>₱${p.price} - ${p.category}</p>
+          </div>
+        </div>
+      `).join('');
+      searchResults.classList.add('active');
+      
+      searchResults.querySelectorAll('.search-result-item').forEach(item=>{
+        item.addEventListener('click',()=>{
+          closeSearch();
+          document.querySelector('#menu').scrollIntoView({behavior:'smooth'});
+          setTimeout(()=>{
+            const filter = allProducts.find(p=>p.id===parseInt(item.dataset.id))?.category;
+            if(filter){
+              activeFilter = filter;
+              $$('.filter-btn').forEach(b=>b.classList.remove('active'));
+              const btn = [...$$('.filter-btn')].find(b=>b.dataset.cat===filter);
+              if(btn) btn.classList.add('active');
+              renderMenuGrid();
+            }
+          }, 500);
+        });
+      });
+    } else {
+      searchResults.innerHTML='<div style="padding:20px;text-align:center;color:var(--coffee)">No results found</div>';
+      searchResults.classList.add('active');
+    }
+  } else {
+    searchResults.classList.remove('active');
+    searchResults.innerHTML='';
+  }
+});
+
+function createProductCard(p){
+  const tagClass=p.tag==='iced'?'tag-iced':p.tag==='hot'?'tag-hot':p.tag==='meal'?'tag-meal':'tag-pastry';
+  const tagLabel=p.tag==='iced'?'Iced':p.tag==='hot'?'Hot':p.tag==='meal'?'Meal':'Pastry';
+  return `
+  <div class="product-card reveal">
+    <div class="product-card-img">
+      <img src="${p.img}" alt="${p.alt}" loading="lazy">
+      <span class="product-tag ${tagClass}">${tagLabel}</span>
+    </div>
+    <div class="product-card-body">
+      <h4>${p.name}</h4>
+      <p>${p.desc}</p>
+      <div class="product-card-footer">
+        <span class="product-price">₱${p.price}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSignature(){
+  const prods=allProducts.filter(p=>signatureIds.includes(p.id));
+  $('#signatureGrid').innerHTML=prods.map(createProductCard).join('');
+  observeReveal();
+}
+
+function renderMenuFilters(){
+  $('#menuFilters').innerHTML=categories.map(c=>
+    `<button class="filter-btn${c===activeFilter?' active':''}" data-cat="${c}">${c}</button>`
+  ).join('');
+  $$('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      activeFilter=btn.dataset.cat;
+      $$('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenuGrid();
+    });
+  });
+}
+
+function renderMenuGrid(customList){
+  let prods=customList||allProducts;
+  if(!customList && activeFilter!=='All Menu'){
+    prods=allProducts.filter(p=>p.category===activeFilter);
+  }
+  $('#menuGrid').innerHTML=prods.map(createProductCard).join('');
+  observeReveal();
+}
+
+function showToast(msg){
+  const toast=document.createElement('div');toast.className='toast';
+  toast.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>${msg}`;
+  toastContainer.appendChild(toast);requestAnimationFrame(()=>toast.classList.add('show'));
+  setTimeout(()=>{toast.classList.remove('show');setTimeout(()=>toast.remove(),400);},3000);
+}
+
+ $('#contactForm').addEventListener('submit',e=>{
+  e.preventDefault();let valid=true;const form=e.target;
+  form.querySelectorAll('.form-group').forEach(g=>g.classList.remove('error'));
+  const name=$('#cName'),email=$('#cEmail'),message=$('#cMessage');
+  if(!name.value.trim()){name.closest('.form-group').classList.add('error');valid=false;}
+  if(!email.value.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)){email.closest('.form-group').classList.add('error');valid=false;}
+  if(!message.value.trim()){message.closest('.form-group').classList.add('error');valid=false;}
+  if(valid){showToast('Message sent!');form.reset();}
+});
+
+ $('#newsletterForm').addEventListener('submit',e=>{
+  e.preventDefault();const input=e.target.querySelector('input');
+  if(!input.value.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)){showToast('Please enter a valid email');return;}
+  showToast('Subscribed!');input.value='';
+});
+
+function observeReveal(){
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('active');observer.unobserve(entry.target);}});},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+  $$('.reveal:not(.active)').forEach(el=>observer.observe(el));
+}
+
+document.getElementById('footerYear').textContent=new Date().getFullYear();
+renderSignature();renderMenuFilters();renderMenuGrid();observeReveal();
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});hamburger.classList.remove('open');mobileNav.classList.remove('open');}
+  });
+});
+</script>
+</body>
+</html>
